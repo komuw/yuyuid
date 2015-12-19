@@ -48,6 +48,10 @@ func Uuid4() string {
 	return uuid4
 }
 
+/*func Uuid5() {
+	//to be continued
+}*/
+
 func main() {
 	u := Uuid4()
 	fmt.Println(u)
