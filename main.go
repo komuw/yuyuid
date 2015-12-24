@@ -15,7 +15,7 @@ func Uuid4() UUID {
 
 	var uuid UUID
 
-	//Read reads up to len(b) bytes into b.
+	//Read reads up to len(uuid) bytes into uuid.
 	//It returns the number of bytes read (0 <= n <= len(p)) and any error encountered
 	_, err := rand.Read(uuid[:])
 	if err != nil {
