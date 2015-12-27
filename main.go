@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/rand"
+	"crypto/sha1"
 	"fmt"
 )
 
@@ -12,10 +13,19 @@ const (
 	RESERVED_FUTURE    byte = 0x00 // Reserved for future definition.
 )
 
+//The following standard UUIDs are for use with uuid3() or uuid5().
+var (
+	NAMESPACE_DNS  = UUID{107, 167, 184, 16, 157, 173, 17, 209, 128, 180, 0, 192, 79, 212, 48, 200}
+	NAMESPACE_URL  = UUID{107, 167, 184, 17, 157, 173, 17, 209, 128, 180, 0, 192, 79, 212, 48, 200}
+	NAMESPACE_OID  = UUID{107, 167, 184, 18, 157, 173, 17, 209, 128, 180, 0, 192, 79, 212, 48, 200}
+	NAMESPACE_X500 = UUID{107, 167, 184, 20, 157, 173, 17, 209, 128, 180, 0, 192, 79, 212, 48, 200}
+)
+
 type UUID [16]byte
 
 func (u UUID) String() string {
-	return fmt.Sprintf("%x-%x-%x-%x-%x", u[0:4], u[4:6], u[6:8], u[8:10], u[10:])
+	return fmt.Sprintf("%x-%x-%x-%x-%x",
+		u[0:4], u[4:6], u[6:8], u[8:10], u[10:])
 }
 
 func (u *UUID) setVariant(variant byte) {
@@ -44,7 +54,7 @@ func Uuid4() UUID {
 	var version byte = 4
 
 	//Read reads up to len(uuid) bytes into uuid.
-	//It returns the number of bytes read (0 <= n <= len(p)) and any error encountered
+	//It returns the number of bytes read (0 <= n <= len(uuid)) and any error encountered
 	_, err := rand.Read(uuid[:])
 	if err != nil {
 		panic(err)
@@ -55,11 +65,24 @@ func Uuid4() UUID {
 	return uuid
 }
 
-/*func Uuid5() {
-	//to be continued
-}*/
+func Uuid5(namespace UUID, name string) UUID {
+	var uuid UUID
+	var version byte = 5
+	hasher := sha1.New()
+	hasher.Write(namespace[:])
+	hasher.Write([]byte(name))
+	sum := hasher.Sum(nil)
+	copy(uuid[:], sum[:len(uuid)])
+
+	uuid.setVariant(RFC_4122)
+	uuid.setVersion(version)
+	return uuid
+}
 
 func main() {
-	u := Uuid4()
-	fmt.Println(u)
+	u4 := Uuid4()
+	fmt.Println("uuid4", u4)
+
+	u5 := Uuid5(NAMESPACE_DNS, "SomeName")
+	fmt.Println("uuid5", u5)
 }
