@@ -1,5 +1,20 @@
 ## Golang uuid library.
 
+# Installation
+`go get github.com/komuW/yuyuid`
+
+# Usage
+`import (
+	"github.com/komuW/yuyuid"
+	"fmt"
+)
+
+func main() {
+	uuid4 := yuyuid.Uuid4()
+	fmt.Println("uuid4 is", u4)
+
+}`
+
 
 # FAQ
                 
