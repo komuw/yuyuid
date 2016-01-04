@@ -4,7 +4,8 @@
 `go get github.com/komuW/yuyuid`
 
 # Usage
-`import (
+```
+import (
 	"github.com/komuW/yuyuid"
 	"fmt"
 )
@@ -15,7 +16,8 @@ func main() {
 
 	uuid5 := yuyuid.Uuid5(yuyuid.NAMESPACE_DNS, "SomeName")
 	fmt.Println("uuid5", uuid5)
-}`
+}
+```
 
 
 # FAQ
