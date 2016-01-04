@@ -1,4 +1,4 @@
-package main
+package yuyuid
 
 import (
 	"crypto/md5"
@@ -92,15 +92,4 @@ func Uuid5(namespace UUID, name string) UUID {
 	uuid.setVariant(RFC_4122)
 	uuid.setVersion(version)
 	return uuid
-}
-
-func main() {
-	u4 := Uuid4()
-	fmt.Println("uuid4", u4)
-
-	u3 := Uuid3(NAMESPACE_DNS, "SomeName")
-	fmt.Println("uuid3", u3)
-
-	u5 := Uuid5(NAMESPACE_DNS, "SomeName")
-	fmt.Println("uuid5", u5)
 }
