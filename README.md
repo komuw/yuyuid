@@ -9,5 +9,4 @@ Why?
 
 Is it done yet?             
 * No
-* Only uuid versions 4 and 5 are implemented. uuid version 3 will be implemented soon 
-but I don't think I'll ever implement version 1
+* Only uuid versions 3, 4 and 5 are implemented. I don't think I'll ever implement uuid version 1

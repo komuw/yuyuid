@@ -1,8 +1,9 @@
 package main
 
 import (
-	"crypto/rand"
+	"crypto/md5"
 	"crypto/sha1"
+	"crypto/rand"
 	"fmt"
 )
 
@@ -48,6 +49,20 @@ func (u *UUID) setVersion(version byte) {
 	u[6] = (u[6] & 0x0F) | (version << 4)
 }
 
+func Uuid3(namespace UUID, name string) UUID {
+	var uuid UUID
+	var version byte = 3
+	hasher := md5.New()
+	hasher.Write(namespace[:])
+	hasher.Write([]byte(name))
+	sum := hasher.Sum(nil)
+	copy(uuid[:], sum[:len(uuid)])
+
+	uuid.setVariant(RFC_4122)
+	uuid.setVersion(version)
+	return uuid
+}
+
 func Uuid4() UUID {
 
 	var uuid UUID
@@ -82,6 +97,9 @@ func Uuid5(namespace UUID, name string) UUID {
 func main() {
 	u4 := Uuid4()
 	fmt.Println("uuid4", u4)
+
+	u3 := Uuid3(NAMESPACE_DNS, "SomeName")
+	fmt.Println("uuid3", u3)
 
 	u5 := Uuid5(NAMESPACE_DNS, "SomeName")
 	fmt.Println("uuid5", u5)
