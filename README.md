@@ -1,4 +1,10 @@
-## Golang uuid library.
+# yuyuid
+[![Build Status](https://travis-ci.com/komuw/yuyuid.svg?branch=master)](https://travis-ci.com/komuw/yuyuid)
+[![codecov](https://codecov.io/gh/komuw/yuyuid/branch/master/graph/badge.svg)](https://codecov.io/gh/komuw/yuyuid)
+[![GoDoc](https://godoc.org/github.com/komuw/yuyuid?status.svg)](https://godoc.org/github.com/komuw/yuyuid)
+[![Go Report Card](https://goreportcard.com/badge/github.com/komuw/yuyuid)](https://goreportcard.com/report/github.com/komuw/yuyuid)     
+
+Go uuid library.        
 
 # Installation
 `go get github.com/komuw/yuyuid`
