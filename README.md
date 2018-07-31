@@ -1,21 +1,30 @@
-## Golang uuid library.
+# yuyuid
+[![Build Status](https://travis-ci.com/komuw/yuyuid.svg?branch=master)](https://travis-ci.com/komuw/yuyuid)
+[![codecov](https://codecov.io/gh/komuw/yuyuid/branch/master/graph/badge.svg)](https://codecov.io/gh/komuw/yuyuid)
+[![GoDoc](https://godoc.org/github.com/komuw/yuyuid?status.svg)](https://godoc.org/github.com/komuw/yuyuid)
+[![Go Report Card](https://goreportcard.com/badge/github.com/komuw/yuyuid)](https://goreportcard.com/report/github.com/komuw/yuyuid)     
+
+Go uuid library.        
 
 # Installation
-`go get github.com/komuW/yuyuid`
+`go get github.com/komuw/yuyuid`
 
 # Usage
-```
+```go
+package main
+
 import (
-	"github.com/komuW/yuyuid"
 	"fmt"
+
+	"github.com/komuw/yuyuid"
 )
 
 func main() {
-	uuid4 := yuyuid.Uuid4()
-	fmt.Println("uuid4 is", uuid4)
+	UUID4 := yuyuid.UUID4()
+	fmt.Println("UUID4 is", UUID4)
 
-	uuid5 := yuyuid.Uuid5(yuyuid.NAMESPACE_DNS, "SomeName")
-	fmt.Println("uuid5", uuid5)
+	UUID5 := yuyuid.UUID5(yuyuid.NamespaceDNS, "SomeName")
+	fmt.Println("UUID5", UUID5)
 }
 ```
 

@@ -1,27 +1,48 @@
+/*
+Package yuyuid provides an implementation of Universally Unique Identifier (UUID) version 3, 4 and 5.
+
+Example usage:
+	package main
+
+	import (
+		"fmt"
+
+		"github.com/komuw/yuyuid"
+	)
+
+	func main() {
+		UUID4 := yuyuid.UUID4()
+		fmt.Println("UUID4 is", UUID4)
+
+		UUID5 := yuyuid.UUID5(yuyuid.NamespaceDNS, "SomeName")
+		fmt.Println("UUID5", UUID5)
+	}
+*/
 package yuyuid
 
 import (
 	"crypto/md5"
-	"crypto/sha1"
 	"crypto/rand"
+	"crypto/sha1"
 	"fmt"
 )
 
 const (
-	RESERVED_NCS       byte = 0x80 //Reserved for NCS compatibility
-	RFC_4122           byte = 0x40 //Specified in RFC 4122
-	RESERVED_MICROSOFT byte = 0x20 //Reserved for Microsoft compatibility
-	RESERVED_FUTURE    byte = 0x00 // Reserved for future definition.
+	reservedNcs       byte = 0x80 //Reserved for NCS compatibility
+	rfc4122           byte = 0x40 //Specified in RFC 4122
+	reservedMicrosoft byte = 0x20 //Reserved for Microsoft compatibility
+	reservedFuture    byte = 0x00 // Reserved for future definition.
 )
 
-//The following standard UUIDs are for use with uuid3() or uuid5().
+//The following standard UUIDs are for use with UUID3() or UUID5().
 var (
-	NAMESPACE_DNS  = UUID{107, 167, 184, 16, 157, 173, 17, 209, 128, 180, 0, 192, 79, 212, 48, 200}
-	NAMESPACE_URL  = UUID{107, 167, 184, 17, 157, 173, 17, 209, 128, 180, 0, 192, 79, 212, 48, 200}
-	NAMESPACE_OID  = UUID{107, 167, 184, 18, 157, 173, 17, 209, 128, 180, 0, 192, 79, 212, 48, 200}
-	NAMESPACE_X500 = UUID{107, 167, 184, 20, 157, 173, 17, 209, 128, 180, 0, 192, 79, 212, 48, 200}
+	NamespaceDNS  = UUID{107, 167, 184, 16, 157, 173, 17, 209, 128, 180, 0, 192, 79, 212, 48, 200}
+	NamespaceURL  = UUID{107, 167, 184, 17, 157, 173, 17, 209, 128, 180, 0, 192, 79, 212, 48, 200}
+	NamespaceOID  = UUID{107, 167, 184, 18, 157, 173, 17, 209, 128, 180, 0, 192, 79, 212, 48, 200}
+	NamespaceX500 = UUID{107, 167, 184, 20, 157, 173, 17, 209, 128, 180, 0, 192, 79, 212, 48, 200}
 )
 
+// UUID represents a UUID
 type UUID [16]byte
 
 func (u UUID) String() string {
@@ -31,15 +52,15 @@ func (u UUID) String() string {
 
 func (u *UUID) setVariant(variant byte) {
 	switch variant {
-	case RESERVED_NCS:
+	case reservedNcs:
 		u[8] &= 0x7F
-	case RFC_4122:
+	case rfc4122:
 		u[8] &= 0x3F
 		u[8] |= 0x80
-	case RESERVED_MICROSOFT:
+	case reservedMicrosoft:
 		u[8] &= 0x1F
 		u[8] |= 0xC0
-	case RESERVED_FUTURE:
+	case reservedFuture:
 		u[8] &= 0x1F
 		u[8] |= 0xE0
 	}
@@ -49,7 +70,8 @@ func (u *UUID) setVersion(version byte) {
 	u[6] = (u[6] & 0x0F) | (version << 4)
 }
 
-func Uuid3(namespace UUID, name string) UUID {
+// UUID3 generates a version 3 UUID
+func UUID3(namespace UUID, name string) UUID {
 	var uuid UUID
 	var version byte = 3
 	hasher := md5.New()
@@ -58,29 +80,30 @@ func Uuid3(namespace UUID, name string) UUID {
 	sum := hasher.Sum(nil)
 	copy(uuid[:], sum[:len(uuid)])
 
-	uuid.setVariant(RFC_4122)
+	uuid.setVariant(rfc4122)
 	uuid.setVersion(version)
 	return uuid
 }
 
-func Uuid4() UUID {
+// UUID4 generates a version 4 UUID
+func UUID4() UUID {
 
 	var uuid UUID
 	var version byte = 4
 
-	//Read reads up to len(uuid) bytes into uuid.
-	//It returns the number of bytes read (0 <= n <= len(uuid)) and any error encountered
+	// Read is a helper function that calls io.ReadFull.
 	_, err := rand.Read(uuid[:])
 	if err != nil {
 		panic(err)
 	}
 
-	uuid.setVariant(RFC_4122)
+	uuid.setVariant(rfc4122)
 	uuid.setVersion(version)
 	return uuid
 }
 
-func Uuid5(namespace UUID, name string) UUID {
+// UUID5 generates a version 5 UUID
+func UUID5(namespace UUID, name string) UUID {
 	var uuid UUID
 	var version byte = 5
 	hasher := sha1.New()
@@ -89,7 +112,7 @@ func Uuid5(namespace UUID, name string) UUID {
 	sum := hasher.Sum(nil)
 	copy(uuid[:], sum[:len(uuid)])
 
-	uuid.setVariant(RFC_4122)
+	uuid.setVariant(rfc4122)
 	uuid.setVersion(version)
 	return uuid
 }
