@@ -7,9 +7,9 @@ import (
 )
 
 func main() {
-	uuid4 := yuyuid.Uuid4()
-	fmt.Println("uuid4 is", uuid4)
+	UUID4 := yuyuid.UUID4()
+	fmt.Println("UUID4 is", UUID4)
 
-	uuid5 := yuyuid.Uuid5(yuyuid.NAMESPACE_DNS, "SomeName")
-	fmt.Println("uuid5", uuid5)
+	UUID5 := yuyuid.UUID5(yuyuid.NamespaceDNS, "SomeName")
+	fmt.Println("UUID5", UUID5)
 }
