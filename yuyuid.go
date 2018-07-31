@@ -2,8 +2,8 @@ package yuyuid
 
 import (
 	"crypto/md5"
-	"crypto/sha1"
 	"crypto/rand"
+	"crypto/sha1"
 	"fmt"
 )
 
